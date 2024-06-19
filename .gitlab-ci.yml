@@ -1,0 +1,48 @@
+image: gitlab/dind
+
+services:
+  - docker:dind
+
+variables:
+  IMAGE_NAME_BACKEND: hdnguyen7702/ci_cd_backend # Thay thế bằng tên username và tên image của bạn
+  IMAGE_NAME_FRONTEND: hdnguyen7702/ci_cd_frontend # Thay thế bằng tên username và tên image của bạn
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - build
+  - docker
+  # - test
+
+maven-build:
+  stage: build
+  image: maven:3.8.1-openjdk-17-slim
+  script:
+    - cd backend
+    - mvn clean package -DskipTests=true
+  artifacts:
+    paths:
+      - backend/target/*.jar
+
+# Uncomment this part if you want to include testing stage
+# maven-test:
+#   stage: test
+#   image: maven:3.8.1-openjdk-17-slim
+#   script:
+#     - cd backend
+#     - mvn test -DskipTests=false
+#   artifacts:
+#     paths:
+#       - backend/target/*.jar
+
+docker-build:
+  stage: docker
+  script:
+    - cd backend
+    - docker login -u $USERNAME_DOCKER -p $PASSWORD_DOCKER
+    - docker build -t $IMAGE_NAME_BACKEND:last .
+    - docker push $IMAGE_NAME_BACKEND:last
+    - cd ..
+    - cd frontend
+    - docker build -t $IMAGE_NAME_FRONTEND:last .
+    - docker push $IMAGE_NAME_FRONTEND:last

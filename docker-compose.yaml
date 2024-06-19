@@ -1,0 +1,113 @@
+services: 
+  database: 
+    image: mysql:5
+    volumes: 
+      - ci-cd-volumes:/var/lib/mysql
+    environment: 
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    restart: always
+    ports:
+      - '3303:3306'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 2
+    networks: 
+      - ci-cd
+  
+  backend: 
+    image: hdnguyen7702/ci_cd_backend:last
+    # build:
+    #   context: ./backend
+    ports:
+      - "8083:8080"
+    environment:
+      MYSQL_ROOT: ${MYSQL_ROOT}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_HOST: ${MYSQL_HOST}
+
+    networks: 
+      - ci-cd
+
+    depends_on:
+      database: 
+        condition: service_healthy  
+
+  
+  webclient:
+    image: hdnguyen7702/ci_cd_frontend:last
+    # build:
+    #   context: ./frontend
+    ports: 
+      - '3000:3000'
+    environment: 
+      - VITE_PORT=3000
+    networks: 
+      - ci-cd
+
+networks: 
+  ci-cd:
+  
+
+volumes:
+  ci-cd-volumes:
+
+
+
+
+# services: 
+#   ci_cd_database: 
+#     image: mysql:8
+#     volumes: 
+#       - ci-cd-volumes:/var/lib/mysql
+#     environment: 
+#       MYSQL_USER: ${MYSQL_USER}
+#       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#       MYSQL_DATABASE: ${MYSQL_DATABASE}
+#     restart: always
+#     ports:
+#       - '3303:3306'
+#     networks: 
+#       - ci-cd
+  
+#   ci_cd_backend: 
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     ports:
+#       - "8083:8080"
+#     environment:
+#       MYSQL_USER: ${MYSQL_USER}
+#       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#       MYSQL_DATABASE: ${MYSQL_DATABASE}
+#       MYSQL_HOST: ${MYSQL_HOST}
+
+#     networks: 
+#       - ci-cd
+
+#     depends_on:
+#       - ci_cd_database
+
+  
+#   ci_cd_webclient:
+#     build:
+#       context: ./frontend
+#     environment: 
+#       - VITE_PORT=3000
+#     ports: 
+#       - '3000:3000'
+#     networks: 
+#       - ci-cd
+# networks: 
+#   ci-cd:
+  
+
+# volumes:
+#   ci-cd-volumes:
+
