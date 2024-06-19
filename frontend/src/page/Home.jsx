@@ -10,7 +10,7 @@ function Home() {
     <div className="mt-[60px] w-full">
        <img className="w-full h-full" loading='lazy' src="/study.jpg" alt=""/>
        {test}
-       build ci/cd thành công
+       build ci/cd thành công + quang rùa
     </div>
   )
 }

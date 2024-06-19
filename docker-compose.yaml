@@ -19,7 +19,7 @@ services:
       - ci-cd
   
   backend: 
-    image: hdnguyen7702/ci_cd_backend:last
+    image: tommy240302/ci_cd_backend_rua:latest
     # build:
     #   context: ./backend
     ports:
@@ -39,7 +39,7 @@ services:
 
   
   webclient:
-    image: hdnguyen7702/ci_cd_frontend:last
+    image: tommy240302/ci_cd_frontend_rua:latest
     # build:
     #   context: ./frontend
     ports: 
