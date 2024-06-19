@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # or your branch name
+      - main  # hoặc tên nhánh của bạn
 
 jobs:
   build:
@@ -28,30 +28,33 @@ jobs:
           job-status: 'success'
           
       - name: Build backend with Maven
-        working-directory: ci_cd_rua/backend  # Adjust path accordingly
+        working-directory: backend
         run: |
+          cd backend
           mvn clean package -DskipTests=true
           
       - name: Archive backend artifacts
         uses: actions/upload-artifact@v2
         with:
           name: backend-artifacts
-          path: ci_cd_rua/backend/target/*.jar
+          path: backend/target/*.jar
           
       - name: Build frontend Docker image
-        working-directory: ci_cd_rua/frontend  # Adjust path accordingly
+        working-directory: frontend
         env:
           IMAGE_NAME_FRONTEND: username/repository
           IMAGE_TAG: latest
         run: |
+          cd frontend
           docker build -t $IMAGE_NAME_FRONTEND:$IMAGE_TAG .
           docker push $IMAGE_NAME_FRONTEND:$IMAGE_TAG
           
       - name: Build backend Docker image
-        working-directory: ci_cd_rua/backend  # Adjust path accordingly
+        working-directory: backend
         env:
           IMAGE_NAME_BACKEND: username/repository
           IMAGE_TAG: latest
         run: |
+          cd backend
           docker build -t $IMAGE_NAME_BACKEND:$IMAGE_TAG .
           docker push $IMAGE_NAME_BACKEND:$IMAGE_TAG
