@@ -40,7 +40,6 @@ jobs:
           
       - name: Build and push frontend Docker image
         run: |
-          cd ..
           cd frontend
           docker build -t tommy240302/ci_cd_frontend_rua:latest .
           docker push tommy240302/ci_cd_frontend_rua:latest
