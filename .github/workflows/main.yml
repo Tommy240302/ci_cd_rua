@@ -27,17 +27,28 @@ jobs:
           overwrite-settings: true
           job-status: 'success'
           
-      - name: Build with Maven
+      - name: Build backend with Maven
+        working-directory: ci_cd_rua/backend  # Adjust path accordingly
         run: |
           mvn clean package -DskipTests=true
           
-      - name: Archive artifacts
+      - name: Archive backend artifacts
         uses: actions/upload-artifact@v2
         with:
           name: backend-artifacts
-          path: backend/target/*.jar
+          path: ci_cd_rua/backend/target/*.jar
           
-      - name: Docker Build and Push
+      - name: Build frontend Docker image
+        working-directory: ci_cd_rua/frontend  # Adjust path accordingly
+        env:
+          IMAGE_NAME_FRONTEND: username/repository
+          IMAGE_TAG: latest
+        run: |
+          docker build -t $IMAGE_NAME_FRONTEND:$IMAGE_TAG .
+          docker push $IMAGE_NAME_FRONTEND:$IMAGE_TAG
+          
+      - name: Build backend Docker image
+        working-directory: ci_cd_rua/backend  # Adjust path accordingly
         env:
           IMAGE_NAME_BACKEND: username/repository
           IMAGE_TAG: latest
