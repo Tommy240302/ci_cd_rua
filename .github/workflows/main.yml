@@ -54,7 +54,7 @@ jobs:
       - name: Build and push backend Docker image
         working-directory: backend
         env:
-          IMAGE_NAME_BACKEND: hdnguyen7702/ci_cd_backend
+          IMAGE_NAME_BACKEND: tommy240302/ci_cd_backend
           IMAGE_TAG_BACKEND: latest
         run: |
           docker build -t $IMAGE_NAME_BACKEND:$IMAGE_TAG_BACKEND .
@@ -63,7 +63,7 @@ jobs:
       - name: Build and push frontend Docker image
         working-directory: frontend
         env:
-          IMAGE_NAME_FRONTEND: hdnguyen7702/ci_cd_frontend
+          IMAGE_NAME_FRONTEND: tommy240302/ci_cd_frontend
           IMAGE_TAG_FRONTEND: latest
         run: |
           docker build -t $IMAGE_NAME_FRONTEND:$IMAGE_TAG_FRONTEND .
