@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Build Backend
 
 on:
   push:
@@ -27,8 +27,7 @@ jobs:
           overwrite-settings: true
           job-status: 'success'
           
-      - name: Build backend with Maven
-        working-directory: backend
+      - name: Build Backend
         run: |
           cd backend
           mvn clean package -DskipTests=true
