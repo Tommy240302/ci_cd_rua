@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 
-export const baseUrl = "http://localhost:8083/api/v1"
+export const baseUrl = "http://localhost:8080/api/v1"
+// hello
 
 export async function fetchData(subUrl, method, body) {
     const url = `${baseUrl}${subUrl}`
