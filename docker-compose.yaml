@@ -20,8 +20,6 @@ services:
   
   backend: 
     image: tommy240302/ci_cd_backend_rua:latest
-    # build:
-    #   context: ./backend
     ports:
       - "8083:8080"
     environment:
@@ -40,8 +38,6 @@ services:
   
   webclient:
     image: tommy240302/ci_cd_frontend_rua:latest
-    # build:
-    #   context: ./frontend
     ports: 
       - '3000:3000'
     environment: 
@@ -58,56 +54,4 @@ volumes:
 
 
 
-
-# services: 
-#   ci_cd_database: 
-#     image: mysql:8
-#     volumes: 
-#       - ci-cd-volumes:/var/lib/mysql
-#     environment: 
-#       MYSQL_USER: ${MYSQL_USER}
-#       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-#       MYSQL_DATABASE: ${MYSQL_DATABASE}
-#     restart: always
-#     ports:
-#       - '3303:3306'
-#     networks: 
-#       - ci-cd
-  
-#   ci_cd_backend: 
-#     build:
-#       context: ./backend
-#       dockerfile: Dockerfile
-#     ports:
-#       - "8083:8080"
-#     environment:
-#       MYSQL_USER: ${MYSQL_USER}
-#       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-#       MYSQL_DATABASE: ${MYSQL_DATABASE}
-#       MYSQL_HOST: ${MYSQL_HOST}
-
-#     networks: 
-#       - ci-cd
-
-#     depends_on:
-#       - ci_cd_database
-
-  
-#   ci_cd_webclient:
-#     build:
-#       context: ./frontend
-#     environment: 
-#       - VITE_PORT=3000
-#     ports: 
-#       - '3000:3000'
-#     networks: 
-#       - ci-cd
-# networks: 
-#   ci-cd:
-  
-
-# volumes:
-#   ci-cd-volumes:
 
